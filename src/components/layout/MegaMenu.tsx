@@ -50,7 +50,7 @@ const MENU_DATA = [
         href: '/seleccion',
         description: 'Gestión de convocatorias CAS y onboarding.',
         submodules: [
-            { title: 'Convocatorias', href: '/seleccion/convocatorias', icon: Briefcase },
+            { title: 'Convocatorias de Personal', href: '/seleccion/convocatorias', icon: Briefcase },
             { title: 'Evaluación de Postulantes', href: '/seleccion/evaluacion', icon: Users },
             { title: 'Onboarding', href: '/seleccion/onboarding', icon: ShieldCheck },
         ]
