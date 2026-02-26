@@ -7,7 +7,7 @@ import {
     Building2, Users, Clock, CalendarClock,
     DollarSign, FileText, Briefcase, GraduationCap,
     TrendingUp, Activity, ShieldPlus, Settings,
-    ShieldCheck, LayoutDashboard, ChevronDown
+    ShieldCheck, LayoutDashboard, ChevronDown, Menu, X
 } from 'lucide-react';
 
 const MENU_DATA = [
@@ -91,6 +91,8 @@ const MENU_DATA = [
 
 export function MegaMenu() {
     const [activeMenu, setActiveMenu] = useState<number | null>(null);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [activeMobileSubmenu, setActiveMobileSubmenu] = useState<number | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseEnter = (index: number) => {
@@ -198,8 +200,88 @@ export function MegaMenu() {
                             );
                         })}
                     </div>
+
+                    {/* Mobile Menu Button */}
+                    <div className="md:hidden flex items-center">
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                            aria-expanded={isMobileMenuOpen}
+                        >
+                            <span className="sr-only">Open main menu</span>
+                            {isMobileMenuOpen ? (
+                                <X className="block h-6 w-6" aria-hidden="true" />
+                            ) : (
+                                <Menu className="block h-6 w-6" aria-hidden="true" />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            {/* Mobile Menu */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="md:hidden overflow-hidden bg-white border-t border-gray-100"
+                    >
+                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 max-h-[calc(100vh-4rem)] overflow-y-auto">
+                            {MENU_DATA.map((menu, index) => {
+                                const Icon = menu.icon;
+                                const isSubmenuActive = activeMobileSubmenu === index;
+
+                                return (
+                                    <div key={menu.title} className="space-y-1 border-b border-gray-50 pb-2 last:border-0">
+                                        <button
+                                            onClick={() => setActiveMobileSubmenu(isSubmenuActive ? null : index)}
+                                            className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-50"
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <Icon className="h-5 w-5 text-gray-500" />
+                                                {menu.title}
+                                            </div>
+                                            <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${isSubmenuActive ? 'rotate-180' : ''}`} />
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {isSubmenuActive && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: 'auto' }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className="overflow-hidden"
+                                                >
+                                                    <div className="pl-11 pr-3 py-2 space-y-1">
+                                                        {menu.submodules.map((subItem) => {
+                                                            const SubIcon = subItem.icon;
+                                                            return (
+                                                                <Link
+                                                                    key={subItem.title}
+                                                                    href={subItem.href}
+                                                                    className="flex items-center gap-2 py-2 text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-md px-2"
+                                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                                >
+                                                                    <SubIcon className="h-4 w-4" />
+                                                                    {subItem.title}
+                                                                </Link>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 }

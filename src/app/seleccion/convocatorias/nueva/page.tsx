@@ -42,7 +42,7 @@ export default function NuevaConvocatoriaPage() {
             if (res.ok) {
                 const data = await res.json();
                 // Redirect exactly to the newly created record layout to attach docs
-                router.push(`/intranet/dashboard/convocatorias/${data.id}`);
+                router.push(`/seleccion/convocatorias/${data.id}`);
             } else {
                 const err = await res.json();
                 setError(err.error || 'Error al guardar el proceso');
@@ -61,7 +61,7 @@ export default function NuevaConvocatoriaPage() {
             <div className="bg-white border-b border-gray-200">
                 <div className="container mx-auto max-w-4xl px-6 py-6 border-b border-gray-100 flex items-center justify-between">
                     <div>
-                        <Link href="/intranet/dashboard/convocatorias" className="inline-flex items-center gap-2 text-hospital-blue font-bold text-sm hover:underline mb-2">
+                        <Link href="/seleccion/convocatorias" className="inline-flex items-center gap-2 text-hospital-blue font-bold text-sm hover:underline mb-2">
                             <ArrowLeft className="w-4 h-4" /> Volver a la Lista
                         </Link>
                         <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
@@ -206,7 +206,7 @@ export default function NuevaConvocatoriaPage() {
 
                         <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-end gap-3">
                             <Link
-                                href="/intranet/dashboard/convocatorias"
+                                href="/seleccion/convocatorias"
                                 className="px-6 py-2.5 rounded-lg font-bold text-gray-600 hover:bg-gray-100 transition-colors"
                             >
                                 Cancelar

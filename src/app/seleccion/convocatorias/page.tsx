@@ -59,7 +59,7 @@ export default function ConvocatoriasDashboard() {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                             <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                                <Link href="/intranet/dashboard" className="hover:text-hospital-blue transition-colors">Dashboard</Link>
+                                <Link href="/mi-portal" className="hover:text-hospital-blue transition-colors">Dashboard</Link>
                                 <span>/</span>
                                 <span className="text-gray-800 font-medium">Recursos Humanos</span>
                             </div>
@@ -70,7 +70,7 @@ export default function ConvocatoriasDashboard() {
                             <p className="text-gray-500 text-sm mt-1">Registra y administra los procesos de selección activos (CAS, 276, etc.)</p>
                         </div>
                         <Link
-                            href="/intranet/dashboard/convocatorias/nueva"
+                            href="/seleccion/convocatorias/nueva"
                             className="bg-hospital-blue text-white px-6 py-2.5 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-800 transition-colors shadow-sm"
                         >
                             <Plus className="w-5 h-5" />
@@ -158,7 +158,7 @@ export default function ConvocatoriasDashboard() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center justify-center gap-2">
-                                                    <Link href={`/intranet/dashboard/convocatorias/${job.id}`} className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors" title="Editar Expediente">
+                                                    <Link href={`/seleccion/convocatorias/${job.id}`} className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors" title="Editar Expediente">
                                                         <Edit className="w-4 h-4" />
                                                     </Link>
                                                     <a href={`/convocatorias/${job.id}`} target="_blank" className="text-gray-400 hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition-colors" title="Ver Público">

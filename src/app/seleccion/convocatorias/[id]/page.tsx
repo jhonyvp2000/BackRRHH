@@ -49,7 +49,7 @@ export default function DetalleConvocatoria({ params }: { params: Promise<{ id: 
                 });
             } else {
                 console.error("Job details response not OK: ", res.status);
-                // router.push('/intranet/dashboard/convocatorias');
+                // router.push('/seleccion/convocatorias');
             }
         } catch (error) {
             console.error(error);
@@ -254,7 +254,7 @@ export default function DetalleConvocatoria({ params }: { params: Promise<{ id: 
 
             if (res.ok) {
                 alert("Convocatoria eliminada exitosamente.");
-                router.push('/intranet/dashboard/convocatorias');
+                router.push('/seleccion/convocatorias');
             } else {
                 alert("Error al intentar eliminar la convocatoria.");
             }
@@ -404,7 +404,7 @@ export default function DetalleConvocatoria({ params }: { params: Promise<{ id: 
             <div className="bg-white border-b border-gray-200">
                 <div className="container mx-auto max-w-5xl px-6 py-6 border-b border-gray-100 flex items-center justify-between">
                     <div>
-                        <Link href="/intranet/dashboard/convocatorias" className="inline-flex items-center gap-2 text-hospital-blue font-bold text-sm hover:underline mb-2">
+                        <Link href="/seleccion/convocatorias" className="inline-flex items-center gap-2 text-hospital-blue font-bold text-sm hover:underline mb-2">
                             <ArrowLeft className="w-4 h-4" /> Volver a las Convocatorias
                         </Link>
                         <div className="flex items-center gap-3">
