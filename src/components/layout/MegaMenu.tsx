@@ -12,7 +12,7 @@ import {
 
 const MENU_DATA = [
     {
-        title: 'Legajo y Organización',
+        title: 'Organización',
         icon: Building2,
         href: '/legajo',
         description: 'Gestión de datos de empleados y organigrama.',
@@ -23,7 +23,7 @@ const MENU_DATA = [
         ]
     },
     {
-        title: 'Asistencia y Tiempos',
+        title: 'Asistencia',
         icon: Clock,
         href: '/asistencia',
         description: 'Control de marcaciones, horarios y permisos.',
@@ -34,7 +34,7 @@ const MENU_DATA = [
         ]
     },
     {
-        title: 'Nómina y Planillas',
+        title: 'Nómina',
         icon: DollarSign,
         href: '/nomina',
         description: 'Cálculo de pagos y emisión de boletas.',
@@ -45,7 +45,7 @@ const MENU_DATA = [
         ]
     },
     {
-        title: 'Selección y Contratación',
+        title: 'Selección',
         icon: Briefcase,
         href: '/seleccion',
         description: 'Gestión de convocatorias CAS y onboarding.',
@@ -56,7 +56,7 @@ const MENU_DATA = [
         ]
     },
     {
-        title: 'Desempeño y Capacitación',
+        title: 'Desempeño',
         icon: TrendingUp,
         href: '/desempeno',
         description: 'POI, evaluaciones anuales y cursos.',
@@ -67,7 +67,7 @@ const MENU_DATA = [
         ]
     },
     {
-        title: 'Bienestar y SSO',
+        title: 'Bienestar',
         icon: ShieldPlus,
         href: '/bienestar',
         description: 'Seguridad, salud y prevención de riesgos.',
@@ -120,8 +120,13 @@ export function MegaMenu() {
                         <div className="bg-blue-600 p-2 rounded-lg">
                             <LayoutDashboard className="h-6 w-6 text-white" />
                         </div>
-                        <Link href="/" className="font-bold text-xl text-gray-900 tracking-tight">
-                            Back <span className="text-blue-600">RRHH</span>
+                        <Link href="/" className="flex flex-col">
+                            <span className="font-bold text-xl text-gray-900 tracking-tight leading-none">
+                                Back <span className="text-blue-600">RRHH</span>
+                            </span>
+                            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest mt-0.5">
+                                OGESS Tarapoto
+                            </span>
                         </Link>
                     </div>
 

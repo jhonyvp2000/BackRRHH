@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { MegaMenu } from "@/components/layout/MegaMenu";
+import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const geistSans = Geist({
@@ -27,10 +28,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.className} bg-slate-50 antialiased`}>
-        <MegaMenu />
-        <main className="min-h-screen">
-          {children}
-        </main>
+        <NextAuthProvider>
+          <MegaMenu />
+          <main className="min-h-screen">
+            {children}
+          </main>
+        </NextAuthProvider>
       </body>
     </html>
   );

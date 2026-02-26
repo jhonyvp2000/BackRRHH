@@ -7,6 +7,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-hospital-blue: #0D47A1;
+  --color-hospital-light: #42A5F5;
+  --color-hospital-bg: #F5F7FA;
+  --color-hospital-text: #171717;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
