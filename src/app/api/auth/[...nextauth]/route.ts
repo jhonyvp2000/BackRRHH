@@ -86,24 +86,4 @@ export const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export async function GET(req: NextRequest, ctx: any) {
-    const protocol = req.headers.get("x-forwarded-proto") || req.nextUrl.protocol.replace(':', '') || "http";
-    const host = req.headers.get("x-forwarded-host") || req.headers.get("host") || req.nextUrl.host || "localhost:3000";
-
-    if (!process.env.NEXTAUTH_URL) {
-        process.env.NEXTAUTH_URL = `${protocol}://${host}`;
-    }
-
-    return handler(req, ctx);
-}
-
-export async function POST(req: NextRequest, ctx: any) {
-    const protocol = req.headers.get("x-forwarded-proto") || req.nextUrl.protocol.replace(':', '') || "http";
-    const host = req.headers.get("x-forwarded-host") || req.headers.get("host") || req.nextUrl.host || "localhost:3000";
-
-    if (!process.env.NEXTAUTH_URL) {
-        process.env.NEXTAUTH_URL = `${protocol}://${host}`;
-    }
-
-    return handler(req, ctx);
-}
+export { handler as GET, handler as POST };
