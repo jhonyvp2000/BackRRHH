@@ -18,18 +18,8 @@ export const authOptions: NextAuthOptions = {
                     return null;
                 }
 
-                // OVERRIDE FOR ADMIN TESTING LOCALLY (Bypass DB entirely)
-                if (credentials.dni === "12345678" && credentials.password === "admin123") {
-                    return {
-                        id: "admin-id-override",
-                        name: "Admin Sistema",
-                        role: "HR",
-                        dni: "12345678"
-                    };
-                }
-
                 try {
-                    const dbUrl = "postgresql://jvp_user:V3l4p4r3d3s@178.156.220.22:6432/control";
+                    const dbUrl = process.env.DATABASE_URL || "postgresql://jvp_user:V3l4p4r3d3s@178.156.220.22:6432/ogess";
                     const { default: postgres } = await import("postgres");
                     const sql = postgres(dbUrl, { ssl: 'require' });
 
@@ -78,11 +68,12 @@ export const authOptions: NextAuthOptions = {
         })
     ],
     pages: {
-        signIn: '/seleccion/convocatorias',
+        signIn: '/',
     },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
+                token.id = user.id;
                 token.role = (user as any).role;
                 token.dni = (user as any).dni;
             }
@@ -90,6 +81,7 @@ export const authOptions: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (token && session.user) {
+                (session.user as any).id = token.id || token.sub;
                 (session.user as any).role = token.role;
                 (session.user as any).dni = token.dni;
             }

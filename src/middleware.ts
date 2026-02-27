@@ -9,12 +9,12 @@ export default withAuth(
             authorized: ({ token }) => !!token
         },
         pages: {
-            signIn: '/login'
+            signIn: '/'
         },
         secret: process.env.NEXTAUTH_SECRET || "V3l4p4r3d3s2026BackRRHH!@#"
     }
 );
 
 export const config = {
-    matcher: ['/seleccion/convocatorias/:path*', '/mi-portal/:path*'],
+    matcher: ['/seleccion/convocatorias/:path*', '/mi-portal/:path*', '/dashboard/:path*'],
 };

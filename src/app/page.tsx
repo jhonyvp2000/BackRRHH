@@ -1,142 +1,150 @@
-import React from 'react';
-import { Users, Clock, TrendingUp, Building2, CheckCircle, AlertTriangle } from 'lucide-react';
+"use client";
 
-export default function Home() {
-  return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
-      {/* Header Section */}
-      <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Bienvenido a Back RRHH</h1>
-          <p className="text-gray-500 mt-1">Panel de control principal del Sistema Integrado de Recursos Humanos</p>
-        </div>
-        <div className="flex items-center gap-3 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg font-medium">
-          <Clock className="h-5 w-5" />
-          <span>{new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-        </div>
-      </div>
+import React, { useState } from 'react';
+import { User, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          title="Colaboradores Activos"
-          value="1,432"
-          trend="+12 este mes"
-          icon={<Users className="h-6 w-6 text-blue-600" />}
-          color="bg-blue-50"
-        />
-        <StatCard
-          title="Asistencia Hoy"
-          value="94%"
-          trend="En línea con el promedio"
-          icon={<CheckCircle className="h-6 w-6 text-emerald-600" />}
-          color="bg-emerald-50"
-        />
-        <StatCard
-          title="Licencias Médicas"
-          value="38"
-          trend="-5 respecto a la semana anterior"
-          icon={<AlertTriangle className="h-6 w-6 text-amber-600" />}
-          color="bg-amber-50"
-        />
-        <StatCard
-          title="Presupuesto Ejecutado"
-          value="42%"
-          trend="Planilla Marzo"
-          icon={<TrendingUp className="h-6 w-6 text-purple-600" />}
-          color="bg-purple-50"
-        />
-      </div>
+import { signIn } from 'next-auth/react';
 
-      {/* Main Dashboard Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Atajos Rápidos */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:col-span-2">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-gray-500" />
-            Accesos Directos
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <ShortcutButton title="Registrar Alta" delay="0ms" />
-            <ShortcutButton title="Procesar Boletas" delay="100ms" />
-            <ShortcutButton title="Ver Marcaciones" delay="200ms" />
-            <ShortcutButton title="Nueva Convocatoria" delay="300ms" />
-            <ShortcutButton title="Reporte Asistencia" delay="400ms" />
-            <ShortcutButton title="Asignar Turnos" delay="500ms" />
-          </div>
-        </div>
+export default function IntranetLoginPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [dni, setDni] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-        {/* Notificaciones */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Avisos Importantes</h2>
-          <div className="space-y-4">
-            <NotificationItem
-              title="Cierre de Planilla"
-              desc="Quedan 3 días para el cierre de la planilla del régimen CAS."
-              time="Hace 2 horas"
-              type="warning"
-            />
-            <NotificationItem
-              title="Actualización de Legajos"
-              desc="45 colaboradores pendientes de actualizar su declaración jurada."
-              time="Hoy, 09:00 AM"
-              type="info"
-            />
-            <NotificationItem
-              title="Convocatoria 004-2024"
-              desc="Fase de entrevistas concluida exitosamente."
-              time="Ayer"
-              type="success"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
-// Sub-components
-function StatCard({ title, value, trend, icon, color }: any) {
-  return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between hover:shadow-md transition-shadow">
-      <div>
-        <p className="text-sm font-medium text-gray-500">{title}</p>
-        <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
-        <p className="text-xs text-gray-400 mt-2">{trend}</p>
-      </div>
-      <div className={`${color} p-3 rounded-xl`}>
-        {icon}
-      </div>
-    </div>
-  );
-}
+    try {
+      const res = await signIn('credentials', {
+        dni,
+        password,
+        redirect: false, // Prevent NextAuth default redirect
+      });
 
-function ShortcutButton({ title, delay }: any) {
-  return (
-    <button
-      className="p-4 bg-gray-50 rounded-xl hover:bg-blue-50 hover:text-blue-700 transition-all text-sm font-medium text-gray-700 hover:shadow-sm text-center border border-transparent hover:border-blue-100"
-      style={{ animationDelay: delay }}
-    >
-      {title}
-    </button>
-  );
-}
-
-function NotificationItem({ title, desc, time, type }: any) {
-  const colors = {
-    warning: "bg-amber-100 text-amber-600",
-    info: "bg-blue-100 text-blue-600",
-    success: "bg-emerald-100 text-emerald-600"
+      if (res?.error) {
+        setError('Credenciales incorrectas o usuario no encontrado');
+        setLoading(false);
+      } else {
+        // Success
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      setError('Ocurrió un error inesperado al conectar.');
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
-      <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${colors[type as keyof typeof colors].replace('bg-', 'bg-').split(' ')[0]}`} />
-      <div>
-        <p className="text-sm font-semibold text-gray-900">{title}</p>
-        <p className="text-xs text-gray-500 mt-1">{desc}</p>
-        <p className="text-[10px] text-gray-400 mt-2">{time}</p>
+    <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-4xl w-full flex flex-col md:flex-row">
+
+        {/* Left Side - Image/Brand */}
+        <div className="w-full md:w-1/2 bg-hospital-blue text-white p-12 flex flex-col justify-between relative overflow-hidden">
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-6">
+              <ShieldCheck className="w-8 h-8" />
+              <span className="font-bold text-xl tracking-wider">INTRANET</span>
+            </div>
+            <h1 className="text-4xl font-bold mb-4">Bienvenido Colaborador</h1>
+            <p className="opacity-80">
+              Accede a tus boletas, cronograma de guardias, legajo digital y comunicados internos en un solo lugar.
+            </p>
+          </div>
+
+          <div className="relative z-10 mt-8">
+            <p className="text-xs opacity-60">
+              Sistema de Gestión Institucional v2.4
+              <br />
+              Hospital Referencial San Martín
+            </p>
+          </div>
+
+          {/* Decorative Circles */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
+          <div className="absolute bottom-0 left-0 w-40 h-40 bg-white opacity-5 rounded-full -ml-10 -mb-10"></div>
+        </div>
+
+        {/* Right Side - Login Form */}
+        <div className="w-full md:w-1/2 p-12">
+          <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Iniciar Sesión</h2>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Usuario / DNI</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <User className="w-5 h-5" />
+                </div>
+                <input
+                  type="text"
+                  value={dni}
+                  onChange={(e) => setDni(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-hospital-light focus:border-transparent outline-none transition-all"
+                  placeholder="Ingrese su usuario o DNI"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Contraseña</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-hospital-light focus:border-transparent outline-none transition-all"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center text-gray-600 cursor-pointer">
+                <input type="checkbox" className="mr-2 text-hospital-blue rounded focus:ring-hospital-light" />
+                Recordarme
+              </label>
+              <a href="#" className="text-hospital-blue hover:underline font-medium">¿Olvidaste tu clave?</a>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full bg-hospital-blue text-white py-3 rounded-xl font-bold hover:bg-opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {loading ? (
+                <span>Autenticando...</span>
+              ) : (
+                <>
+                  Ingresar al Sistema <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-500">
+              ¿Problemas de acceso? Contacta a <a href="#" className="text-hospital-blue font-bold">Informática</a> anexo 105.
+            </p>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </main>
   );
 }

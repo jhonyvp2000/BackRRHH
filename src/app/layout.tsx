@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { MegaMenu } from "@/components/layout/MegaMenu";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +28,6 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${inter.className} bg-slate-50 antialiased`}>
         <NextAuthProvider>
-          <MegaMenu />
           <main className="min-h-screen">
             {children}
           </main>
