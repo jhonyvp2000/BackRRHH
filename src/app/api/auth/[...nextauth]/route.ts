@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
                 try {
                     const dbUrl = process.env.DATABASE_URL || "postgresql://jvp_user:V3l4p4r3d3s@178.156.220.22:6432/ogess";
                     const { default: postgres } = await import("postgres");
-                    const sql = postgres(dbUrl, { ssl: 'require' });
+                    const sql = postgres(dbUrl, { prepare: false });
 
                     const userResult = await sql`
                         SELECT * FROM employees 
@@ -36,16 +36,6 @@ export const authOptions: NextAuthOptions = {
                     }
 
                     const user = userResult[0];
-
-                    // OVERRIDE FOR ADMIN TESTING LOCALLY
-                    if (credentials.dni === "12345678" && credentials.password === "admin123") {
-                        return {
-                            id: user.id,
-                            name: user.name,
-                            role: user.role,
-                            dni: user.dni
-                        };
-                    }
 
                     const passwordsMatch = await bcrypt.compare(credentials.password as string, user.password_hash);
 

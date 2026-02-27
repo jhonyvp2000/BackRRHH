@@ -3,11 +3,12 @@ import { db } from '@/db';
 import { jobPostings } from '@/db/schema';
 import { desc } from 'drizzle-orm';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 // Add a new job posting
 export async function POST(request: Request) {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
@@ -17,6 +18,14 @@ export async function POST(request: Request) {
 
         if (!title || !code || !regime || !department || !vacancies || !description) {
             return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 });
+        }
+
+        console.log("SERVER SESSION AT JOB CREATION:", JSON.stringify(session, null, 2));
+
+        const userId = (session.user as any).id;
+
+        if (!userId) {
+            return NextResponse.json({ error: 'No se pudo obtener la ID del usuario desde la sesión' }, { status: 401 });
         }
 
         const [newJob] = await db.insert(jobPostings).values({
@@ -42,7 +51,7 @@ export async function POST(request: Request) {
 // Get all job postings for the admin dashboard
 export async function GET(request: Request) {
     try {
-        const session = await getServerSession();
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
