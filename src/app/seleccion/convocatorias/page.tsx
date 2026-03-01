@@ -26,6 +26,11 @@ export default function ConvocatoriasDashboard() {
     const [loading, setLoading] = useState(true);
 
     const canCreate = (session?.user as any)?.permissions?.includes('crear:convocatorias');
+    const canRead = (session?.user as any)?.permissions?.includes('leer:convocatorias');
+    const canEdit = (session?.user as any)?.permissions?.includes('editar:convocatorias');
+    const canPublish = (session?.user as any)?.permissions?.includes('publicar:convocatorias');
+    // Note: We don't have delete currently exposed in the UI, but ready just in case.
+    const canDelete = (session?.user as any)?.permissions?.includes('eliminar:convocatorias');
 
     useEffect(() => {
         fetchJobs();
@@ -165,12 +170,19 @@ export default function ConvocatoriasDashboard() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center justify-center gap-2">
-                                                    <Link href={`/seleccion/convocatorias/${job.id}`} className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors" title="Editar Expediente">
-                                                        <Edit className="w-4 h-4" />
-                                                    </Link>
-                                                    <a href={`/convocatorias/${job.id}`} target="_blank" className="text-gray-400 hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition-colors" title="Ver Público">
-                                                        <ExternalLink className="w-4 h-4" />
-                                                    </a>
+                                                    {canEdit && (
+                                                        <Link href={`/seleccion/convocatorias/${job.id}`} className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors" title="Editar Expediente">
+                                                            <Edit className="w-4 h-4" />
+                                                        </Link>
+                                                    )}
+                                                    {canRead && (
+                                                        <a href={`/convocatorias/${job.id}`} target="_blank" className="text-gray-400 hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition-colors" title="Ver Público">
+                                                            <ExternalLink className="w-4 h-4" />
+                                                        </a>
+                                                    )}
+                                                    {(!canEdit && !canRead) && (
+                                                        <span className="text-xs text-gray-400 italic">Sin permisos</span>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>

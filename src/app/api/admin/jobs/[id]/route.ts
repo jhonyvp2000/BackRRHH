@@ -49,9 +49,21 @@ export async function PUT(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        const body = await request.json();
+
+        const canEdit = (session.user as any)?.permissions?.includes('editar:convocatorias');
+        const canPublish = (session.user as any)?.permissions?.includes('publicar:convocatorias');
+
+        if (!canEdit) {
+            return NextResponse.json({ error: 'Forbidden: No tienes permisos para editar.' }, { status: 403 });
+        }
+
+        if (body.status !== undefined && !canPublish) {
+            return NextResponse.json({ error: 'Forbidden: No tienes permisos para cambiar el estado de publicación.' }, { status: 403 });
+        }
+
         const resolvedParams = await params;
         const jobId = resolvedParams.id;
-        const body = await request.json();
 
         const [updatedJob] = await db.update(jobPostings)
             .set({ ...body, updatedAt: new Date() })
@@ -79,6 +91,11 @@ export async function DELETE(
         const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const canDelete = (session.user as any)?.permissions?.includes('eliminar:convocatorias');
+        if (!canDelete) {
+            return NextResponse.json({ error: 'Forbidden: No tienes permisos para eliminar.' }, { status: 403 });
         }
 
         const resolvedParams = await params;
