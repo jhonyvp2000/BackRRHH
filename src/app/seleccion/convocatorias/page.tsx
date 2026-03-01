@@ -25,7 +25,7 @@ export default function ConvocatoriasDashboard() {
     const [jobs, setJobs] = useState<JobPosting[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const canCreate = (session?.user as any)?.permissions?.includes('create:convocatorias');
+    const canCreate = (session?.user as any)?.permissions?.includes('crear:convocatorias');
 
     useEffect(() => {
         fetchJobs();

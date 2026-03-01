@@ -14,7 +14,7 @@ export default function NuevaConvocatoriaPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const canCreate = (session?.user as any)?.permissions?.includes('create:convocatorias');
+    const canCreate = (session?.user as any)?.permissions?.includes('crear:convocatorias');
 
     if (status === "loading") return null;
     if (!canCreate && status === "authenticated") {

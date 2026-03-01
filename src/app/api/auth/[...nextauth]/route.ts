@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
                         .innerJoin(permissionsTable, eq(rolePermissions.permissionId, permissionsTable.id))
                         .where(eq(rolePermissions.roleId, backrrhhRole.roleId));
 
-                    const atomicPermissions = permissionRows.map((p: any) => `${p.action}:${p.resource}`);
+                    const atomicPermissions = permissionRows.map((p: any) => p.action);
 
                     return {
                         id: user.id,
