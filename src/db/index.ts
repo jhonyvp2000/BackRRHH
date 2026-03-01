@@ -11,7 +11,7 @@ let globalDb: any = null;
 function getDb() {
     if (globalDb) return globalDb;
 
-    const connectionString = process.env.DATABASE_URL || "postgresql://jvp_user:V3l4p4r3d3s@178.156.220.22:6432/control";
+    const connectionString = process.env.DATABASE_URL || "postgresql://jvp_user:V3l4p4r3d3s@178.156.220.22:6432/ogess";
     const client = postgres(connectionString, { prepare: false });
     globalDb = drizzle(client, { schema });
     return globalDb;

@@ -13,6 +13,11 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        const canCreate = (session.user as any)?.permissions?.includes('create:convocatorias');
+        if (!canCreate) {
+            return NextResponse.json({ error: 'Forbidden: No tienes permisos para crear convocatorias.' }, { status: 403 });
+        }
+
         const body = await request.json();
         const { title, code, regime, department, vacancies, description, salary, status } = body;
 

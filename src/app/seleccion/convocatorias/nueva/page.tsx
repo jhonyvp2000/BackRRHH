@@ -3,14 +3,32 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import {
     ArrowLeft, Save, FileText, CheckCircle
 } from 'lucide-react';
 
 export default function NuevaConvocatoriaPage() {
     const router = useRouter();
+    const { data: session, status } = useSession();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const canCreate = (session?.user as any)?.permissions?.includes('create:convocatorias');
+
+    if (status === "loading") return null;
+    if (!canCreate && status === "authenticated") {
+        return (
+            <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
+                <FileText className="w-16 h-16 text-red-400 mb-4" />
+                <h2 className="text-2xl font-bold text-gray-800">Acceso Denegado</h2>
+                <p className="text-gray-500 mt-2">No tienes los permisos necesarios para crear convocatorias.</p>
+                <Link href="/seleccion/convocatorias" className="mt-6 bg-hospital-blue text-white px-6 py-2 rounded-lg">
+                    Volver
+                </Link>
+            </div>
+        );
+    }
 
     const [formData, setFormData] = useState({
         title: '',

@@ -8,6 +8,8 @@ import {
     Trash2, ExternalLink
 } from 'lucide-react';
 
+import { useSession } from 'next-auth/react';
+
 interface JobPosting {
     id: string;
     title: string;
@@ -19,8 +21,11 @@ interface JobPosting {
 }
 
 export default function ConvocatoriasDashboard() {
+    const { data: session } = useSession();
     const [jobs, setJobs] = useState<JobPosting[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const canCreate = (session?.user as any)?.permissions?.includes('create:convocatorias');
 
     useEffect(() => {
         fetchJobs();
@@ -69,13 +74,15 @@ export default function ConvocatoriasDashboard() {
                             </h1>
                             <p className="text-gray-500 text-sm mt-1">Registra y administra los procesos de selección activos (CAS, 276, etc.)</p>
                         </div>
-                        <Link
-                            href="/seleccion/convocatorias/nueva"
-                            className="bg-hospital-blue text-white px-6 py-2.5 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-800 transition-colors shadow-sm"
-                        >
-                            <Plus className="w-5 h-5" />
-                            Nuevo Proceso
-                        </Link>
+                        {canCreate && (
+                            <Link
+                                href="/seleccion/convocatorias/nueva"
+                                className="bg-hospital-blue text-white px-6 py-2.5 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-800 transition-colors shadow-sm"
+                            >
+                                <Plus className="w-5 h-5" />
+                                Nuevo Proceso
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
