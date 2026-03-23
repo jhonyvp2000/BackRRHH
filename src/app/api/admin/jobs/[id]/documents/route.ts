@@ -40,15 +40,15 @@ export async function POST(
         // Convert Web File to ArrayBuffer for Supabase Node compat
         const fileBuffer = await file.arrayBuffer();
 
-        // Upload to Supabase Storage (bucket named 'documents')
+        // Upload to Supabase Storage (bucket named 'convocatoriaspersonal')
         const { data, error } = await supabase.storage
-            .from('documents')
+            .from('convocatoriaspersonal')
             .upload(fileName, fileBuffer, { contentType: file.type });
 
         if (error) throw new Error(`Supabase upload error: ${error.message}`);
 
         // Get public URL
-        const { data: publicData } = supabase.storage.from('documents').getPublicUrl(fileName);
+        const { data: publicData } = supabase.storage.from('convocatoriaspersonal').getPublicUrl(fileName);
 
         // Save to Database
         const [newDoc] = await db.insert(jobDocuments).values({
